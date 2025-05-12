@@ -1,0 +1,93 @@
+{% extends "cmSolSystem/layout.html" %}
+{% load static %}
+
+{% block body %}
+    <div id="slogan">
+        <img src="{% static 'cmSolSystem/cmSuaVidaMaisTranquila.jpg' %}" id="sloganImg" alt="Slogan_Img" width="100%">
+    </div>
+    <div id="register">
+        <h4>{{ message }}</h4>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="username" id="usernameLabel" hidden></label>
+                <input class="form-control" type="text" id="username" name="username" placeholder="Nome de usuário" oninput="assertLength(this.id, 15);" onchange="checkFields(this.id);" required>
+            </div>
+            <div class="form-group">
+                <label for="name" id="nameLabel" hidden></label>
+                <input class="form-control" type="text" id="name" name="name" placeholder="Nome" oninput="assertLength(this.id, 30);" onchange="checkFields(this.id);" required>
+            </div>
+            <div class="form-group">
+                <label for="lastname" id="lastnameLabel" hidden></label>
+                <input class="form-control" type="text" id="lastname" name="lastname" placeholder="Sobrenome" oninput="assertLength(this.id, 60);" onchange="checkFields(this.id);" required>
+            </div>
+            <div class="form-group">
+                <label for="cpf" id="cpfLabel" hidden></label>
+                <input class="form-control" type="text" id="cpf" name="cpf" placeholder="CPF (somente números)" onchange="checkFields(this.id);" oninput="changeCpfInput(this.id);" required>
+            </div>
+            <div class="form-group">
+                <label for="cel" id="celLabel" hidden></label>
+                <input class="form-control" type="text" id="cel" name="cel" placeholder="Celular (somente números)" onchange="checkFields(this.id);" oninput="changeCelInput(this.id);" required>
+            </div>
+            <div class="form-group">
+                <label for="email" id="emailLabel" hidden></label>
+                <input class="form-control" type="email" id="email" name="email" placeholder="Endereço de email" onchange="checkFields(this.id);" required>
+            </div>
+            <div class="form-group">
+                <label for="condos" id="condosLabel" hidden></label>
+                <select class="form-select" id="condos" name="condos" onchange="checkFields(this.id);">
+                    <option selected value="n" id="noption">Condomínios</option>
+                    {% for condo in condos %}
+                    <option value="{{ condo.id }}" id="condo{{ condo.id }}">{{ condo.name }}</option>
+                    {% endfor%}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="token" id="tokenLabel" hidden></label>
+                <input class="form-control" type="password" id="token" name="token" placeholder="Token do Condomínio" onchange="checkFields(this.id);" required>
+            </div>
+            <div class="form-group">
+                <label for="password" id="passwordLabel" hidden></label>
+                <input class="form-control" type="password" id="password" name="password" placeholder="Password" onchange="checkFields(this.id);" required>
+            </div>
+            <div class="form-group">
+                <label for="repassword" id="repasswordLabel" hidden></label>
+                <input class="form-control" type="password" id="repassword" name="repassword" placeholder="Confirm Password" oninput="checkFields(this.id);" required>
+            </div>
+            <div class="form-group">
+                <input class="btn btn-primary" id="btnRegister" value="Registre-se">
+            </div>        
+        </form>
+    </div>
+    <div id="produtos">
+        <div class="card-columns">
+            {% for produto in produtos %}
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" src="{{ produto.image_url }}" id="alcoolLiquido" alt="Álcool Líquido">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ produto.name }}</h5>
+                        <p class="card-text">{{ produto.description }}</p>
+                    </div>
+                </div>
+            {% endfor%}
+        </div>
+    </div>
+    <div id="areaCliente">
+        <center>
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="usernameAC" id="usernameLabelAC" hidden></label>
+                    <input class="form-control" type="text" id="usernameAC" name="usernameAC" placeholder="Nome de usuário" oninput="assertLength(this.id, 15);" required>
+                </div>
+                <div class="form-group">
+                    <label for="passwordAC" id="passwordLabelAC" hidden></label>
+                    <input class="form-control" type="password" id="passwordAC" name="passwordAC" placeholder="Password" required>
+                </div>
+                <div class="form-group">
+                    <input class="btn btn-primary" id="btnEntrar" value="Entrar">
+                </div>        
+            </form>
+        </center>
+    </div>
+{% endblock %}
