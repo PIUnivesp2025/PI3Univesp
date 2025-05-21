@@ -3,11 +3,15 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('#register').style.display = 'none';
     document.querySelector('#produtos').style.display = 'none';
     document.querySelector('#areaCliente').style.display = 'none';
+    document.querySelector('#rfidView').style.display = 'none';
     document.querySelector('#slogan').style.display = 'block';
 
     // Add functions to the buttons
     document.querySelector('#btnRegister').addEventListener('click', () => saveNewUser());
 });
+
+// Call the readRFID() function each second to know if some card id is read
+setInterval(readRFID, 1000);
 
 document.addEventListener('click', function(event) {
     let clickedId = event.target.id
@@ -32,12 +36,14 @@ function register() {
     document.querySelector('#register').style.display = 'block';
     document.querySelector('#produtos').style.display = 'none';
     document.querySelector('#areaCliente').style.display = 'none';
+    document.querySelector('#rfidView').style.display = 'none';
 }
 
 function showProducts() {
     document.querySelector('#register').style.display = 'none';
     document.querySelector('#produtos').style.display = 'block';
     document.querySelector('#slogan').style.display = 'none';
+    document.querySelector('#rfidView').style.display = 'none';
     document.querySelector('#areaCliente').style.display = 'none';
 }
 
@@ -45,7 +51,16 @@ function areaCliente() {
     document.querySelector('#register').style.display = 'none';
     document.querySelector('#produtos').style.display = 'none';
     document.querySelector('#slogan').style.display = 'none';
+    document.querySelector('#rfidView').style.display = 'none';
     document.querySelector('#areaCliente').style.display = 'block';
+}
+
+function rfidView() {
+    document.querySelector('#register').style.display = 'none';
+    document.querySelector('#produtos').style.display = 'none';
+    document.querySelector('#slogan').style.display = 'none';
+    document.querySelector('#areaCliente').style.display = 'none';
+    document.querySelector('#rfidView').style.display = 'block';
 }
 
 function backToTop() {
@@ -462,4 +477,29 @@ async function saveNewUser() {
         //location.replace(location.href)
         location.reload()
     }
+}
+
+
+function readRFID() {    
+    // Call the Python function to get the id from card that makes an access
+    fetch('/rfid')
+    .then(response => response.json())
+    .then(data => {        
+
+        if (data != '') {
+            console.log(`data: ${data}`);
+
+            // Get the current time
+            const d = new Date();
+
+            // Create an html element to represent the rfid access
+            const h6 = document.createElement('h6');
+            // h6.className = 'some class name';
+            // h6.id = 'some id';
+            h6.innerHTML = `ID do cartão: ${data}. Data de acesso: ${d.getDate()} / ${d.getMonth() + 1} / ${d.getFullYear()} Horário de acesso: ${d.toLocaleTimeString()}`;
+            //h6.style = 'margin-right: 1vw;';
+            // Add the button to the DOM
+            document.querySelector('#rfidView').append(h6);
+        } 
+    });
 }
