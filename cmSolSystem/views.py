@@ -6,8 +6,12 @@ from django.core import serializers
 import json
 from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
+import serial # pip install pyserial
 
 from .models import User, Condominio, Produto
+
+# Adjust the serial port and the baud rate
+#serialCom = serial.Serial("COM3", 9600, timeout=1)
 
 # Create your views here.
 def index(request):
@@ -145,3 +149,24 @@ def cToken(request, id, token):
         print(f"Token {token} for condo with id {id} is valid")
 
     return JsonResponse(c, safe=False)
+
+
+def rfid(request):
+    serialCom.flushInput()
+    packet = ""
+    data = ""
+    packet = serialCom.readline()
+
+    if packet != "":
+        data = packet.decode("utf")
+        # Remove new line charactere
+        data = data.rstrip("\n")
+        # Remove carriage return charactere?
+        data = data.rstrip("\r")
+        #print(f"data: {data}")
+        
+    if data != "":
+        print(f"data: {data}")
+
+    # In order to return a string, the parameter safe=False must be passed
+    return JsonResponse(data, safe=False)
