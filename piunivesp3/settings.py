@@ -26,6 +26,7 @@ SECRET_KEY = 'django-insecure-n98*1$s_nke2gi8dy*+osd)nmnovxau@o6m=o!6&j!hua2-pl6
 DEBUG = True
 
 #ALLOWED_HOSTS = ['192.168.15.173']
+#ALLOWED_HOSTS = ['192.168.137.198'] # python manage.py runserver 192.168.137.198:8000
 ALLOWED_HOSTS = []
 
 
